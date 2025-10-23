@@ -18,11 +18,14 @@ const Dashboard = async (props: Props) => {
   return (
     <main className = "px-8 mx-auto max-w-7xl">
         <div className="flex items-center"></div>
-            <h2 className = "mr-2 text-3xl font-bold tracking-tight"></h2>
-        <div className="grid gap-4 mt-4 md:grid-cols-2"></div>
+            <h2 className = "mr-2 text-3xl font-bold tracking-tight">Dashboard</h2>
+        <div className="grid gap-4 mt-4 md:grid-cols-2">
             <QuizMeCard/>
             <HistoryCard/>
-        <div className="grid gap-4 mt-4 md:grid-cols-2 lg:grid-cols-7"></div>
+        </div>
+
+        <div className="grid gap-4 mt-4 md:grid-cols-2 lg:grid-cols-7">
+        </div>
         
     </main>
   )
