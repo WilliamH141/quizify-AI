@@ -16,7 +16,7 @@ const RecentActivites = (props: Props) => {
 
         </CardHeader>
 
-        <CardContent className = "max-h-[500px] overflow-scroll">
+        <CardContent className = "max-h-[580px] overflow-scroll">
             Historyss
         </CardContent>
        
