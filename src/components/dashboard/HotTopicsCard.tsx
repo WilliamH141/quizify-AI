@@ -1,5 +1,6 @@
 import React from 'react'
 import { Card, CardContent, CardTitle, CardHeader, CardDescription } from '../ui/card'
+import CustomWordCloud from '../CustomWordCloud'
 
 type Props = {}
 
@@ -15,7 +16,7 @@ const HotTopicsCard = (props: Props) => {
         </CardHeader>
 
         <CardContent>
-            <p className = "pl-2">Word cloud</p>
+            <p className = "pl-2"><CustomWordCloud/></p>
         </CardContent>
         
     </Card>
