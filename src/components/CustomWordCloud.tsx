@@ -1,27 +1,35 @@
 // app/components/WordCloudDemo.tsx
 'use client';
 
-import { Word, WordCloud } from '@isoterik/react-word-cloud';
+import D3WordCloud from 'react-d3-cloud';
+import { useTheme } from "next-themes";
+import React from 'react'
 
-const words: Word[] = [
-  { text: 'React', value: 42 },
-  { text: 'Quizify', value: 30 },
-  { text: 'AI', value: 25 },
-  { text: 'Next.js', value: 18 },
-  { text: 'Prisma', value: 16 },
-  { text: 'Supabase', value: 14 },
-];
+type Props = {}
 
-export default function WordCloudDemo() {
+const data = [
+    {
+        text: "Hey",
+        value: 3
+    }
+]
+
+const CustomWordCloud = (props: Props) => {
+    const theme = useTheme()
   return (
-    <div className="w-full max-w-3xl">
-      <WordCloud
-        words={words}
-        width={800}
-        height={400}
-        padding={2}
-        enableTooltip
-      />
-    </div>
-  );
+    <>
+    <D3WordCloud 
+    height = {550} 
+    data = {data}
+    font = "Times" 
+    fontSize = {9}
+    padding={10}
+    fill={theme.theme == "dark" ? "white": "black"}
+    />
+    </>
+    
+  
+  )
 }
+
+export default CustomWordCloud
