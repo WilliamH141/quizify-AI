@@ -14,6 +14,10 @@ const data = [
     }
 ]
 
+const fontSizeWrapper = (word: {value: number}) => {
+    return Math.log2(word.value * 5 + 16)
+}
+
 const CustomWordCloud = (props: Props) => {
     const theme = useTheme()
   return (
@@ -22,7 +26,7 @@ const CustomWordCloud = (props: Props) => {
     height = {550} 
     data = {data}
     font = "Times" 
-    fontSize = {9}
+    fontSize = {fontSizeWrapper}
     padding={10}
     fill={theme.theme == "dark" ? "white": "black"}
     />
