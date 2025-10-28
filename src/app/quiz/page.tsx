@@ -15,10 +15,9 @@ const page = async (props: Props) => {
         return redirect("/")
     }
   return (
-    <div>Quiz Page</div>
+    <div><QuizCreation/></div>
   )
 
-  return <QuizCreation/>
 }
 
 export default page
