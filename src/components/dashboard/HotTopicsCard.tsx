@@ -15,8 +15,8 @@ const HotTopicsCard = (props: Props) => {
             </CardDescription>
         </CardHeader>
 
-        <CardContent>
-            <p className = "pl-2"><CustomWordCloud/></p>
+        <CardContent className = "pl-2">
+            <CustomWordCloud/>
         </CardContent>
         
     </Card>
