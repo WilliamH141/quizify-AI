@@ -10,12 +10,24 @@ type Props = {}
 const data = [
     {
         text: "Hey",
-        value: 3
-    }
-]
+        value: 3,
+    },
+    {
+        text: "fds",
+        value: 3,
+    },
+    {
+        text: "fdsfsd",
+        value: 3,
+    },
+    {
+        text: "Hey",
+        value: 3,
+    },
+];
 
 const fontSizeWrapper = (word: {value: number}) => {
-    return Math.log2(word.value * 5 + 16)
+    return Math.log2(word.value) * 5 + 16
 }
 
 const CustomWordCloud = (props: Props) => {
@@ -27,6 +39,7 @@ const CustomWordCloud = (props: Props) => {
     data = {data}
     font = "Times" 
     fontSize = {fontSizeWrapper}
+    rotate={0}
     padding={10}
     fill={theme.theme == "dark" ? "white": "black"}
     />
