@@ -6,19 +6,21 @@ type Props = {}
 const QuizCreation = (props: Props) => {
     return (
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        <Card className = "w-full">
-            <CardHeader>
-                <CardTitle className = "font-bold text-2xl">
-                    Quiz Creation
-                </CardTitle>
-                <CardDescription>
-                    Choose a topic
-                </CardDescription>
-            </CardHeader>
 
+        <Card>
+        <CardHeader className = "flex flex-row items-center justify-between pb-2 space-y-0">
+            <CardTitle className = "text-2xl font-bold">
+                Quiz Creation
+            </CardTitle>
+        </CardHeader>
 
-        </Card>
+        <CardContent>
+            <p className = "text-sm text-muted-foreground">Choose a topic</p>
+        </CardContent>
+    </Card>
         </div>
+
+
 
 
     )
