@@ -13,14 +13,22 @@ export const POST = async (req: Request) => {
     if (type === "open_ended") {
       questions = await strict_output(
         "You are a helpful ai that is able to generate a pair of questions and answers. the length of the answer should never exceed 15 words. store all the pairs of answers an questions in a JSON array",
-        `You are to generate a random hard open-ended question about ${topic}`,
-        {}
+        new Array(amount).fill(
+        `You are to generate a random hard open-ended question about ${topic}`),
+        {
+          question: "question",
+          answer: "answer with max length of 15 words",
+        }
       );
     }
 
     return NextResponse.json({
-      hello: "world",
-    });
+      questions,
+    },
+  {
+    status: 200,
+
+  });
   } catch (error) {
     if (error instanceof ZodError) {
       return NextResponse.json(
