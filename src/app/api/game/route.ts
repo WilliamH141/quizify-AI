@@ -1,3 +1,4 @@
+import { prisma } from "@/lib/db";
 import { getAuthSession } from "@/lib/nextauth";
 import { quizCreationSchema } from "@/schemas/form/quiz";
 import { NextResponse } from "next/server";
@@ -16,6 +17,15 @@ export async function POST(req: Request) {
 
     const body = await req.json()
     const {amount, topic, type} = quizCreationSchema.parse(body);
+    const game = await prisma.game.create({
+        data: {
+            gameType: type,
+            timeStarted: new Date(),
+            userId: session.user.id,
+            topic
+
+        }
+    })
     
 
   } catch (error) {
