@@ -3,6 +3,7 @@ import { getAuthSession } from "@/lib/nextauth";
 import { quizCreationSchema } from "@/schemas/form/quiz";
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
+import axios from 'axios'
 
 export async function POST(req: Request) {
   try {
@@ -26,7 +27,10 @@ export async function POST(req: Request) {
 
         }
     })
-    
+
+    const response = await axios.post('http://localhost:3000/api/questions', {
+        amount, topic, type
+    })
 
   } catch (error) {
     if (error instanceof ZodError) {
