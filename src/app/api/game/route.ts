@@ -1,5 +1,7 @@
 import { getAuthSession } from "@/lib/nextauth";
+import { quizCreationSchema } from "@/schemas/form/quiz";
 import { NextResponse } from "next/server";
+import { ZodError } from "zod";
 
 export async function POST(req: Request) {
   try {
@@ -12,15 +14,16 @@ export async function POST(req: Request) {
       );
     }
 
-    return NextResponse.json(
-      { message: "Request received" },
-      { status: 200 }
-    );
+    const body = await req.json()
+    const {amount, topic, type} = quizCreationSchema.parse(body);
+    
 
   } catch (error) {
-    return NextResponse.json(
-      { error: "Something went wrong" },
-      { status: 500 }
-    );
+    if (error instanceof ZodError) {
+        return NextResponse.json(
+      { error: error.issues },
+      { status: 400 }
+    ); 
+    }
   }
 }
