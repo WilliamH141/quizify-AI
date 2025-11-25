@@ -28,7 +28,7 @@ export async function POST(req: Request) {
         }
     })
 
-    const response = await axios.post('http://localhost:3000/api/questions', {
+    const {data} = await axios.post('http://localhost:3000/api/questions', {
         amount, topic, type
     })
 
