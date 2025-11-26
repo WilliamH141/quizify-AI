@@ -41,9 +41,8 @@ export const POST = async (req: Request) => {
             question: 'question',
             answer: 'answer with max length of 15 words',
             option1: "1st option with a max length of 15 words",
-            option2: "1st option with a max length of 15 words",
-            option3: "1st option with a max length of 15 words",
-            option4: "1st option with a max length of 15 words",
+            option2: "2nd option with a max length of 15 words",
+            option3: "3rd option with a max length of 15 words",
           }
       )
     }
