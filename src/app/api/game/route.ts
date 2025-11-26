@@ -46,7 +46,7 @@ export async function POST(req: Request) {
             return {
                 question: question.question,
                 answer: question.answer,
-                options: JSON.stringify(options)
+                options: JSON.stringify(options),
                 gameId: game.id,
                 questionType: 'mcq'
             }
