@@ -15,12 +15,23 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import {useMutation} from '@tanstack/react-query'
+import axios from "axios"
 
 type Props = {}
 
 type InputType = z.infer<typeof quizCreationSchema>
 
 const QuizCreation = (props: Props) => {
+  const {mutate: getQuestions, isPending} = useMutation({
+    mutationFn: async ({amount, topic, type}: InputType) => {
+      const response = await axios.post('/api/game', {
+        amount,
+        topic,
+        type
+      })
+    }
+  })
   const form = useForm<InputType>({
     resolver: zodResolver(quizCreationSchema),
     defaultValues: {
@@ -32,7 +43,12 @@ const QuizCreation = (props: Props) => {
   })
 
   const onSubmit = (values: InputType) => {
-    // TODO: hook up to your action/mutation
+    getQuestions({
+      amount: values.amount,
+      topic: values.topic,
+      type: values.type,
+      
+    })
     console.log("Quiz form values:", values)
   }
 
