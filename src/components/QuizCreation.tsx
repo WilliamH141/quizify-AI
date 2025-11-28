@@ -17,12 +17,14 @@ import {
 import { Input } from "@/components/ui/input"
 import {useMutation} from '@tanstack/react-query'
 import axios from "axios"
+import { useRouter } from "next/navigation"
 
 type Props = {}
 
 type InputType = z.infer<typeof quizCreationSchema>
 
 const QuizCreation = (props: Props) => {
+  const router = useRouter()
   const {mutate: getQuestions, isPending} = useMutation({
     mutationFn: async ({amount, topic, type}: InputType) => {
       const response = await axios.post('/api/game', {
@@ -30,6 +32,8 @@ const QuizCreation = (props: Props) => {
         topic,
         type
       })
+
+      return response.data
     }
   })
   const form = useForm<InputType>({
@@ -48,8 +52,16 @@ const QuizCreation = (props: Props) => {
       topic: values.topic,
       type: values.type,
       
-    })
-    console.log("Quiz form values:", values)
+    },
+  {
+    onSuccess: ({gameId}) => {
+      if (form.getValues('type') == 'open_ended') {
+        router.push(`/play/open-ended/${gameId}`)
+      } else {
+        router.push(`/play/mcq/${gameId}`)
+      }
+    }
+  })
   }
 
   return (
