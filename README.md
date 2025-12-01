@@ -27,10 +27,12 @@ Create a .env file in the root directory and add:
 
 bash
 Copy code
-DATABASE_URL=your_supabase_url
-DIRECT_URL=your_supabase_direct_url
-NEXTAUTH_SECRET=your_secret
-OPENAI_API_KEY=your_openai_key
+DATABASE_URL="postgres_connection"
+NEXTAUTH_SECRET="your_secret"
+GOOGLE_CLIENT_ID="your_google_client_id"
+GOOGLE_CLIENT_SECRET="your_google_client_secret"
+OPENAI_API_KEY="your_openai_key"
+API_URL="http://localhost:3000"
 Push the Prisma schema:
 
 bash
