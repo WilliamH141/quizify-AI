@@ -3,13 +3,16 @@
 import { SessionProvider } from 'next-auth/react';
 import React from 'react'
 import { ThemeProvider as NextThemesProvider, ThemeProvider } from "next-themes"
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 
 type ThemeProviderProps = React.ComponentProps<typeof NextThemesProvider>;
 
+const queryClient = new QueryClient()
 
 const Providers = ({ children, ...props }: ThemeProviderProps) => {
   return (
+    <QueryClientProvider client = {queryClient}>
     <ThemeProvider attribute = "class" defaultTheme='system' enableSystem>
 
       <SessionProvider>
@@ -17,7 +20,9 @@ const Providers = ({ children, ...props }: ThemeProviderProps) => {
       </SessionProvider>
 
 
-    </ThemeProvider>
+    </ThemeProvider>      
+    </QueryClientProvider>
+
     
   )
 }
