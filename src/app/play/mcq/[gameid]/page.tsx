@@ -1,3 +1,6 @@
+import { prisma } from '@/lib/db';
+import { getAuthSession } from '@/lib/nextauth';
+import { redirect } from 'next/navigation';
 import React from 'react'
 
 type Props = {
@@ -7,7 +10,11 @@ type Props = {
 }
 
 const MCQPage = async ({params: {gameId}}: Props) => {
-  return (
+    const session = await getAuthSession()
+    if (!session?.user) {
+        return redirect('/')
+    }
+    return (
     <div>{gameId}</div>
   )
 }
