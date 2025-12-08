@@ -20,7 +20,13 @@ const MCQPage = async ({params: {gameId}}: Props) => {
 
         },
         include: {
-            questions: true
+            questions: {
+                select: {
+                    id: true,
+                    question: true,
+                    options: true,
+                }
+            }
         }
     })
 
