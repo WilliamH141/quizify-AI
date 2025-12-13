@@ -1,4 +1,5 @@
 import { Game, Question } from '@prisma/client'
+import { Timer } from 'lucide-react'
 import React from 'react'
 
 type Props = {
@@ -15,7 +16,11 @@ const MCQ = ({game}: Props) => {
                 <span className = "text-slate-400">Topic</span>
                 <span className = "px-2 py-1 text-white rounded-lg bg-slate-800">{game.topic}</span>
             </p>
-
+            <div className="flex self-start mt-3 text-slate-400">
+                <Timer className = "mr-2"/>
+                <span>00:01</span>
+                {/* mcqCounter */}
+            </div>
         </div>
 
     </div>
