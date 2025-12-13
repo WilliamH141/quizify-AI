@@ -1,6 +1,7 @@
 import { Game, Question } from '@prisma/client'
 import { Timer } from 'lucide-react'
 import React from 'react'
+import { Card, CardHeader, CardTitle } from './ui/card'
 
 type Props = {
     game: Game & {questions: Pick<Question, "id" | "options" | "question">[]}
@@ -22,6 +23,17 @@ const MCQ = ({game}: Props) => {
                 {/* mcqCounter */}
             </div>
         </div>
+
+        <Card className = "w-full mt-4">
+            <CardHeader className="flex flex-row items-center">
+                <CardTitle className = "mr-5 text-center divide-y divide-zinc-800/50">
+                    <div>1</div>
+                    <div className="text-base text-slate-400">
+                        {game.questions.length}
+                    </div>
+                </CardTitle>
+            </CardHeader>
+        </Card>
 
     </div>
 
