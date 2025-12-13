@@ -36,7 +36,7 @@ export const POST = async (req: Request) => {
       questions = await strict_output (
         'You are a helpful ai that is able to generate mcq questions and answers, the length of each answer should not exceed 15 words',
           new Array(amount).fill(
-          `You are to geenrate a random mcq question about ${topic}`),
+          `You are to generate a random mcq question about ${topic}`),
           {
             question: 'question',
             answer: 'answer with max length of 15 words',
