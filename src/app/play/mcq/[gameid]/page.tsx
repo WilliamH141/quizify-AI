@@ -6,18 +6,18 @@ import React from 'react'
 
 type Props = {
     params: {
-        gameId: string;
+        gameid: string;
     }
 }
 
-const MCQPage = async ({params: {gameId}}: Props) => {
+const MCQPage = async ({params: {gameid}}: Props) => {
     const session = await getAuthSession()
     if (!session?.user) {
         return redirect('/')
     }
     const game = await prisma.game.findUnique({
         where: {
-            id: gameId,
+            id: gameid,
 
         },
         include: {
