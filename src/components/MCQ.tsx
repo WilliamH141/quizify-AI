@@ -8,6 +8,12 @@ type Props = {
 }
 
 const MCQ = ({game}: Props) => {
+    const [ questionIndex, setQuestionIndex ] = React.useState(0)
+
+    const currentQuestion = React.useMemo(() => {
+        return game.questions[questionIndex]
+    }, [questionIndex, game.questions])
+
   return (
     <div className="absolute -translate-x-1/2 -translate-y-1/2 md:w-[80vw] max-w-4xl w-[90vw] top-1/2 left-1/2">
         <div className="flex flex-row justify-between" >
@@ -37,7 +43,7 @@ const MCQ = ({game}: Props) => {
                 </CardDescription>
             </CardHeader>
         </Card>
-
+ 
     </div>
 
   )
