@@ -39,17 +39,17 @@ const MCQ = ({game}: Props) => {
         <Card className = "w-full mt-4">
             <CardHeader className="flex flex-row items-center">
                 <CardTitle className = "mr-5 text-center divide-y divide-zinc-800/50">
-                    <div>1</div>
+                    <div>{questionIndex + 1}</div>
                     <div className="text-base text-slate-400">
                         {game.questions.length}
                     </div>
                 </CardTitle>
                 <CardDescription className="flex-grow text-lg">
-                    Define electrolysis
+                    {currentQuestion.question}
                 </CardDescription>
             </CardHeader>
         </Card>
-        
+
     </div>
 
   )
