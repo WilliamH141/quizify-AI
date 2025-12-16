@@ -1,3 +1,5 @@
+'use client'
+
 import { Game, Question } from '@prisma/client'
 import { Timer } from 'lucide-react'
 import React from 'react'
