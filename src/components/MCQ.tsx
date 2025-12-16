@@ -15,7 +15,8 @@ const MCQ = ({game}: Props) => {
     }, [questionIndex, game.questions])
 
     const options = React.useMemo(() => {
-
+        if (!currentQuestion) return []
+        if (!currentQuestion.options) return []
         return JSON.parse(currentQuestion.options as string) as string[];
     }, [currentQuestion])
     
@@ -48,7 +49,7 @@ const MCQ = ({game}: Props) => {
                 </CardDescription>
             </CardHeader>
         </Card>
- 
+        
     </div>
 
   )
