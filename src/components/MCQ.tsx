@@ -28,7 +28,7 @@ const MCQ = ({game}: Props) => {
             {/* topic */}
 
             <p>
-                <span className = "text-slate-400">Topic</span>
+                <span className = "text-slate-400 mr-2">Topic</span>
                 <span className = "px-2 py-1 text-white rounded-lg bg-slate-800">{game.topic}</span>
             </p>
             <div className="flex self-start mt-3 text-slate-400">
