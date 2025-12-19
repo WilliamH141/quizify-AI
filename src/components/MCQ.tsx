@@ -12,6 +12,7 @@ type Props = {
 
 const MCQ = ({game}: Props) => {
     const [ questionIndex, setQuestionIndex ] = React.useState(0)
+    const [selectedChoice, setSelectedChoice] = React.useState<number>(0)
 
     const currentQuestion = React.useMemo(() => {
         return game.questions[questionIndex]
@@ -56,7 +57,12 @@ const MCQ = ({game}: Props) => {
         <div className="flex flex-col items-center justify-center w-full mt-4">
             {options.map((option,index) => {
                 return (
-                    <Button key = {index} className = "justify-start w-full py-8 mb-4">
+                    <Button key = {index} className = "justify-start w-full py-8 mb-4"
+                    variant = {selectedChoice === index ? 'default': 'secondary'}
+                    onClick = {() => {
+                        setSelectedChoice(index);
+                    }}>
+
                         <div className="flex items-center justify-start">
                             <div className="p-2 px-3 mr-5 border rounded-md">
                                 {index + 1}
