@@ -1,7 +1,7 @@
 'use client'
 
 import { Game, Question } from '@prisma/client'
-import { Timer } from 'lucide-react'
+import { ChevronRight, Timer } from 'lucide-react'
 import React from 'react'
 import { Card, CardDescription, CardHeader, CardTitle } from './ui/card'
 import { Button } from './ui/button'
@@ -72,6 +72,9 @@ const MCQ = ({game}: Props) => {
                     </Button>
                 )
             })}
+            <Button className = "mt-2">
+                Next <ChevronRight className = "w-4 h-4 ml-2"/>
+            </Button>
         </div>
 
     </div>
