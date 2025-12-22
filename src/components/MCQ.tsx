@@ -6,6 +6,10 @@ import React from 'react'
 import { Card, CardDescription, CardHeader, CardTitle } from './ui/card'
 import { Button } from './ui/button'
 import MCQCounter from './MCQCounter'
+import axios from 'axios'
+import { useMutation } from '@tanstack/react-query'
+import { checkAnswerSchema } from '@/schemas/form/quiz'
+import z from 'zod'
 
 type Props = {
     game: Game & {questions: Pick<Question, "id" | "options" | "question">[]}
@@ -14,10 +18,19 @@ type Props = {
 const MCQ = ({game}: Props) => {
     const [ questionIndex, setQuestionIndex ] = React.useState(0)
     const [selectedChoice, setSelectedChoice] = React.useState<number>(0)
-
+    
     const currentQuestion = React.useMemo(() => {
         return game.questions[questionIndex]
     }, [questionIndex, game.questions])
+
+    const {mutate: checkAnswer, isPending: isChecking} = useMutation({
+        mutationFn: async () => {
+            const payload: z.infer<typeof checkAnswerSchema> = {
+                questionId: currentQuestion.id,
+                userAnswer: options[selectedChoice]}
+            const response = await axios.post('/api/checkAnswer', payload)
+        }
+    })
 
     const options = React.useMemo(() => {
         if (!currentQuestion) return []
