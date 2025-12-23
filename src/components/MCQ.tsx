@@ -18,6 +18,8 @@ type Props = {
 const MCQ = ({game}: Props) => {
     const [ questionIndex, setQuestionIndex ] = React.useState(0)
     const [selectedChoice, setSelectedChoice] = React.useState<number>(0)
+    const [correctAnswers, setCorrectAnswers] = React.useState<number>(0)
+    const [wrongAnswers, setWrongAnswers] = React.useState<number>(0)
     
     const currentQuestion = React.useMemo(() => {
         return game.questions[questionIndex]
@@ -29,8 +31,21 @@ const MCQ = ({game}: Props) => {
                 questionId: currentQuestion.id,
                 userAnswer: options[selectedChoice]}
             const response = await axios.post('/api/checkAnswer', payload)
+            return response.data
         }
     })
+
+    const handleNext = React.useCallback(() => {
+        checkAnswer(undefined, {
+            onSuccess: ({isCorrect}) =>{
+                if (isCorrect) {
+                    setCorrectAnswers(prev => prev + 1);
+                } else {
+                    setWrongAnswers(prev => prev + 1)
+                }
+            }
+        })
+    }, [])
 
     const options = React.useMemo(() => {
         if (!currentQuestion) return []
