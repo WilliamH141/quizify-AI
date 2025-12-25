@@ -10,6 +10,7 @@ import axios from 'axios'
 import { useMutation } from '@tanstack/react-query'
 import { checkAnswerSchema } from '@/schemas/form/quiz'
 import z from 'zod'
+import { toast } from 'sonner'
 
 type Props = {
     game: Game & {questions: Pick<Question, "id" | "options" | "question">[]}
@@ -25,6 +26,12 @@ const MCQ = ({game}: Props) => {
         return game.questions[questionIndex]
     }, [questionIndex, game.questions])
 
+    const options = React.useMemo(() => {
+        if (!currentQuestion) return []
+        if (!currentQuestion.options) return []
+        return JSON.parse(currentQuestion.options as string) as string[];
+    }, [currentQuestion])
+
     const {mutate: checkAnswer, isPending: isChecking} = useMutation({
         mutationFn: async () => {
             const payload: z.infer<typeof checkAnswerSchema> = {
@@ -32,26 +39,21 @@ const MCQ = ({game}: Props) => {
                 userAnswer: options[selectedChoice]}
             const response = await axios.post('/api/checkAnswer', payload)
             return response.data
+        },
+        onSuccess: ({isCorrect}) => {
+            if (isCorrect) {
+                toast.success("Correct!")
+                setCorrectAnswers(prev => prev + 1);
+            } else {
+                toast.error("Wrong answer")
+                setWrongAnswers(prev => prev + 1)
+            }
         }
     })
 
     const handleNext = React.useCallback(() => {
-        checkAnswer(undefined, {
-            onSuccess: ({isCorrect}) =>{
-                if (isCorrect) {
-                    setCorrectAnswers(prev => prev + 1);
-                } else {
-                    setWrongAnswers(prev => prev + 1)
-                }
-            }
-        })
-    }, [])
-
-    const options = React.useMemo(() => {
-        if (!currentQuestion) return []
-        if (!currentQuestion.options) return []
-        return JSON.parse(currentQuestion.options as string) as string[];
-    }, [currentQuestion])
+        checkAnswer(undefined)
+    }, [checkAnswer])
     
   return (
     <div className="absolute -translate-x-1/2 -translate-y-1/2 md:w-[80vw] max-w-4xl w-[90vw] top-1/2 left-1/2">
@@ -102,7 +104,7 @@ const MCQ = ({game}: Props) => {
                     </Button>
                 )
             })}
-            <Button className = "mt-2">
+            <Button className = "mt-2" onClick={handleNext} disabled={isChecking}>
                 Next <ChevronRight className = "w-4 h-4 ml-2"/>
             </Button>
         </div>
