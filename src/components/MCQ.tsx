@@ -53,7 +53,18 @@ const MCQ = ({game}: Props) => {
 
     const handleNext = React.useCallback(() => {
         checkAnswer(undefined)
-    }, [checkAnswer])
+    }, [checkAnswer, isChecking])
+
+    React.useEffect(() => {
+        const handleKeyPress = (event: KeyboardEvent) => {
+            const key = parseInt(event.key)
+            if (key >= 1 && key <= 4 && key <= options.length) {
+                setSelectedChoice(key - 1)
+            }
+        }
+        document.addEventListener('keydown', handleKeyPress)
+        return () => document.removeEventListener('keydown', handleKeyPress)
+    }, [options.length])
     
   return (
     <div className="absolute -translate-x-1/2 -translate-y-1/2 md:w-[80vw] max-w-4xl w-[90vw] top-1/2 left-1/2">
