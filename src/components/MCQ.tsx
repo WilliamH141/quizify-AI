@@ -11,6 +11,7 @@ import { useMutation } from '@tanstack/react-query'
 import { checkAnswerSchema } from '@/schemas/form/quiz'
 import z from 'zod'
 import { toast } from 'sonner'
+import { formatTimeDelta } from '@/lib/utils'
 
 type Props = {
     game: Game & {questions: Pick<Question, "id" | "options" | "question">[]}
@@ -21,6 +22,8 @@ const MCQ = ({game}: Props) => {
     const [selectedChoice, setSelectedChoice] = React.useState<number>(0)
     const [correctAnswers, setCorrectAnswers] = React.useState<number>(0)
     const [wrongAnswers, setWrongAnswers] = React.useState<number>(0)
+    const [hasEnded, setHasEnded] = React.useState(false)
+    const [now, setNow] = React.useState<Date>(new Date())
     
     const currentQuestion = React.useMemo(() => {
         return game.questions[questionIndex]
@@ -48,6 +51,15 @@ const MCQ = ({game}: Props) => {
                 toast.error("Wrong answer")
                 setWrongAnswers(prev => prev + 1)
             }
+            
+            const nextIndex = questionIndex + 1
+            if (nextIndex === game.questions.length) {
+                setHasEnded(true)
+                toast.success("Quiz completed!")
+            } else {
+                setQuestionIndex(nextIndex)
+                setSelectedChoice(0)
+            }
         }
     })
 
@@ -65,8 +77,37 @@ const MCQ = ({game}: Props) => {
         document.addEventListener('keydown', handleKeyPress)
         return () => document.removeEventListener('keydown', handleKeyPress)
     }, [options.length])
+
+    React.useEffect(() => {
+        const interval = setInterval(() => {
+            if (!hasEnded) {
+                setNow(new Date())
+            }
+        }, 1000)
+        return () => clearInterval(interval)
+    }, [hasEnded])
     
   return (
+    <>
+    {hasEnded ? (
+        <div className="absolute -translate-x-1/2 -translate-y-1/2 md:w-[80vw] max-w-4xl w-[90vw] top-1/2 left-1/2">
+            <div className="flex flex-col justify-center items-center">
+                <div className="px-4 mt-2 font-semibold text-white bg-green-500 rounded-md whitespace-nowrap">
+                    You completed in {formatTimeDelta(Math.round((now.getTime() - game.timeStarted.getTime()) / 1000))}
+                </div>
+                <div className="mt-4">
+                    <p className="text-2xl font-bold">
+                        Your Score: {correctAnswers} / {game.questions.length}
+                    </p>
+                </div>
+                <a href={`/statistics/${game.id}`} className="mt-4">
+                    <Button>
+                        View Statistics
+                    </Button>
+                </a>
+            </div>
+        </div>
+    ) : (
     <div className="absolute -translate-x-1/2 -translate-y-1/2 md:w-[80vw] max-w-4xl w-[90vw] top-1/2 left-1/2">
         <div className="flex flex-row justify-between" >
             <div className="flex flex-col">
@@ -77,10 +118,10 @@ const MCQ = ({game}: Props) => {
                 </p>
                 <div className="flex self-start mt-3 text-slate-400">
                     <Timer className = "mr-2"/>
-                    <span>00:01</span>
+                    <span>{formatTimeDelta(Math.round((now.getTime() - game.timeStarted.getTime()) / 1000))}</span>
                 </div>
             </div>
-            <MCQCounter wrongAnswers={3} correctAnswers={3}/>
+            <MCQCounter wrongAnswers={wrongAnswers} correctAnswers={correctAnswers}/>
         </div>
 
         <Card className = "w-full mt-4">
@@ -121,7 +162,8 @@ const MCQ = ({game}: Props) => {
         </div>
 
     </div>
-
+    )}
+    </>
   )
 }
 
