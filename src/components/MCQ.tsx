@@ -73,10 +73,13 @@ const MCQ = ({game}: Props) => {
             if (key >= 1 && key <= 4 && key <= options.length) {
                 setSelectedChoice(key - 1)
             }
+            if (event.key === 'Enter') {
+                handleNext()
+            }
         }
         document.addEventListener('keydown', handleKeyPress)
         return () => document.removeEventListener('keydown', handleKeyPress)
-    }, [options.length])
+    }, [options.length, handleNext])
 
     React.useEffect(() => {
         const interval = setInterval(() => {
