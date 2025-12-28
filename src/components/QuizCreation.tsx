@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input"
 import {useMutation} from '@tanstack/react-query'
 import axios from "axios"
 import { useRouter } from "next/navigation"
+import { Button } from "./ui/button"
 
 type Props = {}
 
@@ -114,16 +115,25 @@ const QuizCreation = (props: Props) => {
 
               {/* Type */}
               <Field data-invalid={!!form.formState.errors.type}>
-                <FieldLabel htmlFor="type">Question Type</FieldLabel>
-                <select
-                  id="type"
-                  className="w-full rounded-md border px-3 py-2 text-sm"
-                  aria-invalid={!!form.formState.errors.type}
-                  {...form.register("type")}
-                >
-                  <option value="open_ended">Open-ended</option>
-                  <option value="mcq">Multiple choice</option>
-                </select>
+                <FieldLabel>Question Type</FieldLabel>
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant={form.watch("type") === "mcq" ? "default" : "secondary"}
+                    className="flex-1"
+                    onClick={() => form.setValue("type", "mcq")}
+                  >
+                    Multiple Choice
+                  </Button>
+                  <Button
+                    type="button"
+                    variant={form.watch("type") === "open_ended" ? "default" : "secondary"}
+                    className="flex-1"
+                    onClick={() => form.setValue("type", "open_ended")}
+                  >
+                    Open-ended
+                  </Button>
+                </div>
                 <FieldDescription>Choose how questions should be formatted.</FieldDescription>
                 {!!form.formState.errors.type && (
                   <FieldError errors={[form.formState.errors.type]} />
