@@ -170,6 +170,9 @@ const MCQ = ({game}: Props) => {
             <Button className = "mt-2" onClick={handleNext} disabled={isChecking}>
                 Next <ChevronRight className = "w-4 h-4 ml-2"/>
             </Button>
+            <p className="text-xs text-slate-500 mt-4">
+                💡 Tip: Press 1-4 to select, Enter to submit
+            </p>
         </div>
 
     </div>
