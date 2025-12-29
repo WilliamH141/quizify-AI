@@ -127,6 +127,14 @@ const MCQ = ({game}: Props) => {
             <MCQCounter wrongAnswers={wrongAnswers} correctAnswers={correctAnswers}/>
         </div>
 
+        {/*progress bar*/}
+        <div className="w-full bg-slate-700 rounded-full h-2 mt-4">
+          <div 
+            className="bg-blue-500 h-2 rounded-full transition-all"
+            style={{ width: `${((questionIndex + 1) / game.questions.length) * 100}%` }}
+          ></div>
+        </div>
+
         <Card className = "w-full mt-4">
             <CardHeader className="flex flex-row items-center">
                 <CardTitle className = "mr-5 text-center divide-y divide-zinc-800/50">
