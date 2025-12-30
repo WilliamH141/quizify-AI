@@ -24,6 +24,7 @@ const MCQ = ({game}: Props) => {
     const [wrongAnswers, setWrongAnswers] = React.useState<number>(0)
     const [hasEnded, setHasEnded] = React.useState(false)
     const [now, setNow] = React.useState<Date>(new Date())
+    const [streak, setStreak] = React.useState<number>(0)
     
     const currentQuestion = React.useMemo(() => {
         return game.questions[questionIndex]
@@ -46,10 +47,12 @@ const MCQ = ({game}: Props) => {
         onSuccess: ({isCorrect}) => {
             if (isCorrect) {
                 toast.success("Correct!")
-                setCorrectAnswers(prev => prev + 1);
+                setCorrectAnswers(prev => prev + 1)
+                setStreak(prev => prev + 1)
             } else {
                 toast.error("Wrong answer")
                 setWrongAnswers(prev => prev + 1)
+                setStreak(0)
             }
             
             const nextIndex = questionIndex + 1
@@ -123,6 +126,11 @@ const MCQ = ({game}: Props) => {
                     <Timer className = "mr-2"/>
                     <span>{formatTimeDelta(Math.round((now.getTime() - game.timeStarted.getTime()) / 1000))}</span>
                 </div>
+                {streak > 0 && (
+                  <div className="flex self-start mt-2 text-amber-500 font-semibold">
+                    <span>Streak: {streak}</span>
+                  </div>
+                )}
             </div>
             <MCQCounter wrongAnswers={wrongAnswers} correctAnswers={correctAnswers}/>
         </div>
