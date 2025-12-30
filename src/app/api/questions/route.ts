@@ -24,15 +24,15 @@ export const POST = async (req: Request) => {
       );
     }else if (type === 'mcq') {
       questions = await strict_output (
-        'You are a helpful ai that is able to generate mcq questions and answers, the length of each answer should not exceed 15 words',
+        'You are a helpful ai that is able to generate mcq questions and answers. The length of each answer should not exceed 15 words. IMPORTANT: All options (answer, option1, option2, option3) must be unique and different from each other. Do NOT (i repeat do NOT) repeat any options.',
           new Array(amount).fill(
           `You are to generate a random mcq question about ${topic}`),
           {
             question: 'question',
             answer: 'answer with max length of 15 words',
-            option1: "1st option with a max length of 15 words",
-            option2: "2nd option with a max length of 15 words",
-            option3: "3rd option with a max length of 15 words",
+            option1: "1st option with a max length of 15 words (must be different from answer)",
+            option2: "2nd option with a max length of 15 words (must be different from answer and option1)",
+            option3: "3rd option with a max length of 15 words (must be different from answer, option1, and option2)",
           }
       )
     }
