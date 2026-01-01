@@ -57,19 +57,6 @@ const OpenEnded = ({game}: Props) => {
                 setFeedback(feedback)
                 setShowFeedback(true)
             }
-            
-            const nextIndex = questionIndex + 1
-            if (nextIndex === game.questions.length) {
-                setHasEnded(true)
-                toast.success("Quiz completed!")
-            } else {
-                setTimeout(() => {
-                    setShowFeedback(false)
-                    setFeedback("")
-                    setQuestionIndex(nextIndex)
-                    setUserAnswer("")
-                }, 2000)
-            }
         }
     })
 
@@ -80,6 +67,19 @@ const OpenEnded = ({game}: Props) => {
         }
         checkAnswer(undefined)
     }, [userAnswer, checkAnswer])
+
+    const handleNextQuestion = React.useCallback(() => {
+        const nextIndex = questionIndex + 1
+        if (nextIndex === game.questions.length) {
+            setHasEnded(true)
+            toast.success("Quiz completed!")
+        } else {
+            setShowFeedback(false)
+            setFeedback("")
+            setQuestionIndex(nextIndex)
+            setUserAnswer("")
+        }
+    }, [questionIndex, game.questions.length])
 
     React.useEffect(() => {
         const handleKeyPress = (event: KeyboardEvent) => {
@@ -169,16 +169,13 @@ const OpenEnded = ({game}: Props) => {
                 value={userAnswer}
                 onChange={(e) => setUserAnswer(e.target.value)}
                 onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !isChecking) {
+                    if (e.key === 'Enter' && !isChecking && !showFeedback) {
                         handleNext()
                     }
                 }}
                 className="w-full py-6 text-base"
                 disabled={isChecking || showFeedback}
             />
-            <Button className = "mt-4 w-full" onClick={handleNext} disabled={isChecking || showFeedback}>
-                {isChecking ? "Checking..." : "Submit"} <ChevronRight className = "w-4 h-4 ml-2"/>
-            </Button>
             
             {showFeedback && feedback && (
                 <div className="w-full mt-4 p-4 bg-blue-500/20 border border-blue-500 rounded-lg">
@@ -189,9 +186,20 @@ const OpenEnded = ({game}: Props) => {
                 </div>
             )}
             
-            <p className="text-xs text-slate-500 mt-4">
-                💡 Tip: Press Enter to submit your answer
-            </p>
+            <Button 
+                className = "mt-4 w-full" 
+                onClick={showFeedback ? handleNextQuestion : handleNext} 
+                disabled={isChecking}
+            >
+                {isChecking ? "Checking..." : showFeedback ? "Next Question" : "Submit"} 
+                <ChevronRight className = "w-4 h-4 ml-2"/>
+            </Button>
+            
+            {!showFeedback && (
+                <p className="text-xs text-slate-500 mt-4">
+                    💡 Tip: Press Enter to submit your answer
+                </p>
+            )}
         </div>
 
     </div>
