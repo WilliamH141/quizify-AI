@@ -26,6 +26,8 @@ const OpenEnded = ({game}: Props) => {
     const [now, setNow] = React.useState<Date>(new Date())
     const [userAnswer, setUserAnswer] = React.useState<string>("")
     const [streak, setStreak] = React.useState<number>(0)
+    const [feedback, setFeedback] = React.useState<string>("")
+    const [showFeedback, setShowFeedback] = React.useState(false)
     
     const currentQuestion = React.useMemo(() => {
         return game.questions[questionIndex]
@@ -40,7 +42,7 @@ const OpenEnded = ({game}: Props) => {
             const response = await axios.post('/api/checkAnswer', payload)
             return response.data
         },
-        onSuccess: ({isCorrect}) => {
+        onSuccess: ({isCorrect, feedback}) => {
             if (isCorrect) {
                 toast.success("Correct!")
                 setCorrectAnswers(prev => prev + 1)
@@ -51,13 +53,22 @@ const OpenEnded = ({game}: Props) => {
                 setStreak(0)
             }
             
+            if (feedback) {
+                setFeedback(feedback)
+                setShowFeedback(true)
+            }
+            
             const nextIndex = questionIndex + 1
             if (nextIndex === game.questions.length) {
                 setHasEnded(true)
                 toast.success("Quiz completed!")
             } else {
-                setQuestionIndex(nextIndex)
-                setUserAnswer("")
+                setTimeout(() => {
+                    setShowFeedback(false)
+                    setFeedback("")
+                    setQuestionIndex(nextIndex)
+                    setUserAnswer("")
+                }, 2000)
             }
         }
     })
@@ -163,11 +174,21 @@ const OpenEnded = ({game}: Props) => {
                     }
                 }}
                 className="w-full py-6 text-base"
-                disabled={isChecking}
+                disabled={isChecking || showFeedback}
             />
-            <Button className = "mt-4 w-full" onClick={handleNext} disabled={isChecking}>
+            <Button className = "mt-4 w-full" onClick={handleNext} disabled={isChecking || showFeedback}>
                 {isChecking ? "Checking..." : "Submit"} <ChevronRight className = "w-4 h-4 ml-2"/>
             </Button>
+            
+            {showFeedback && feedback && (
+                <div className="w-full mt-4 p-4 bg-blue-500/20 border border-blue-500 rounded-lg">
+                    <p className="text-sm text-blue-200">
+                        <span className="font-semibold">Feedback: </span>
+                        {feedback}
+                    </p>
+                </div>
+            )}
+            
             <p className="text-xs text-slate-500 mt-4">
                 💡 Tip: Press Enter to submit your answer
             </p>
