@@ -183,6 +183,10 @@ const OpenEnded = ({game}: Props) => {
                         <span className="font-semibold">Feedback: </span>
                         {feedback}
                     </p>
+                    <p className="text-sm text-green-200 mt-2">
+                        <span className="font-semibold">Correct Answer: </span>
+                        {currentQuestion.answer}
+                    </p>
                 </div>
             )}
             
