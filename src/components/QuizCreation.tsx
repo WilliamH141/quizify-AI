@@ -42,7 +42,7 @@ const QuizCreation = (props: Props) => {
     defaultValues: {
       amount: 3,
       topic: "",
-      type: "open_ended",
+      type: undefined,
     },
     mode: "onSubmit",
   })
