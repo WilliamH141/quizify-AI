@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation'
 import React from 'react'
 import Link from 'next/link'
 import { buttonVariants } from '@/components/ui/button'
-import { LucideLayoutDashboard } from 'lucide-react'
+import { LucideLayoutDashboard, RotateCcw } from 'lucide-react'
 import ResultsCard from '@/components/statistics/ResultsCard'
 import AccuracyCard from '@/components/statistics/AccuracyCard'
 
@@ -52,6 +52,10 @@ const StatisticsPage = async ({params: {gameId}}: Props) => {
                 <div className="flex items-center justify-between space-y-2">
                     <h2 className="text-3xl font-bold tracking-tight">Statistics</h2>
                     <div className="flex items-center space-x-2">
+                        <Link href={`/play/${game.gameType === 'mcq' ? 'mcq' : 'open-ended'}/${gameId}`} className={buttonVariants({ variant: 'outline' })}>
+                            <RotateCcw className="mr-2 w-4 h-4" />
+                            Retry Quiz
+                        </Link>
                         <Link href="/dashboard" className={buttonVariants()}>
                             <LucideLayoutDashboard className="mr-2" />
                             Back to Dashboard
