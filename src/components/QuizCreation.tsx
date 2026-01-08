@@ -142,9 +142,10 @@ const QuizCreation = (props: Props) => {
 
               <button
                 type="submit"
-                className="mt-2 rounded-xl px-4 py-2 text-sm font-medium shadow-sm border"
+                className="w-full mt-2 rounded-lg px-4 py-2 text-sm font-medium bg-blue-600 text-white shadow-sm hover:bg-blue-700 transition-colors disabled:opacity-50"
+                disabled={isPending}
               >
-                Create quiz
+                {isPending ? "Creating..." : "Create Quiz"}
               </button>
             </FieldGroup>
           </form>
