@@ -40,7 +40,7 @@ const QuizCreation = (props: Props) => {
   const form = useForm<InputType>({
     resolver: zodResolver(quizCreationSchema),
     defaultValues: {
-      amount: 3,
+      amount: undefined,
       topic: "",
       type: undefined,
     },
@@ -100,6 +100,7 @@ const QuizCreation = (props: Props) => {
                     <FieldLabel htmlFor="amount">Number of Questions</FieldLabel>
                     <Input
                       id="amount"
+                      placeholder="e.g. 5"
                       type="number"
                       inputMode="numeric"
                       aria-invalid={fieldState.invalid}
