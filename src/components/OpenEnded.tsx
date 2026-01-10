@@ -83,13 +83,16 @@ const OpenEnded = ({game}: Props) => {
 
     React.useEffect(() => {
         const handleKeyPress = (event: KeyboardEvent) => {
-            if (event.key === 'Enter' && !isChecking) {
+            if (event.key === 'Enter' && !isChecking && !showFeedback) {
                 handleNext()
+            }
+            if (event.key === 'Escape') {
+                window.history.back()
             }
         }
         document.addEventListener('keydown', handleKeyPress)
         return () => document.removeEventListener('keydown', handleKeyPress)
-    }, [handleNext, isChecking])
+    }, [handleNext, isChecking, showFeedback])
 
     React.useEffect(() => {
         const interval = setInterval(() => {
@@ -201,7 +204,7 @@ const OpenEnded = ({game}: Props) => {
             
             {!showFeedback && (
                 <p className="text-xs text-slate-500 mt-4">
-                    💡 Tip: Press Enter to submit your answer
+                    💡 Tip: Press Enter to submit, ESC to go back
                 </p>
             )}
         </div>

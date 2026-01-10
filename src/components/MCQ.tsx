@@ -79,6 +79,9 @@ const MCQ = ({game}: Props) => {
             if (event.key === 'Enter') {
                 handleNext()
             }
+            if (event.key === 'Escape') {
+                window.history.back()
+            }
         }
         document.addEventListener('keydown', handleKeyPress)
         return () => document.removeEventListener('keydown', handleKeyPress)
@@ -179,7 +182,7 @@ const MCQ = ({game}: Props) => {
                 Next <ChevronRight className = "w-4 h-4 ml-2"/>
             </Button>
             <p className="text-xs text-slate-500 mt-4">
-                💡 Tip: Press 1-4 to select, Enter to submit
+                💡 Tip: Press 1-4 to select, Enter to submit, ESC to go back
             </p>
         </div>
 
