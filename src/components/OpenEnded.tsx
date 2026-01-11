@@ -13,6 +13,7 @@ import z from 'zod'
 import { toast } from 'sonner'
 import { formatTimeDelta } from '@/lib/utils'
 import { Input } from './ui/input'
+import confetti from 'canvas-confetti'
 
 type Props = {
     game: Game & {questions: Pick<Question, "id" | "question" | "answer">[]}
@@ -93,6 +94,35 @@ const OpenEnded = ({game}: Props) => {
         document.addEventListener('keydown', handleKeyPress)
         return () => document.removeEventListener('keydown', handleKeyPress)
     }, [handleNext, isChecking, showFeedback])
+
+    React.useEffect(() => {
+        if (hasEnded && correctAnswers === game.questions.length) {
+            const duration = 2000
+            const end = Date.now() + duration
+
+            const frame = () => {
+                confetti({
+                    particleCount: 2,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#22c55e', '#3b82f6', '#f59e0b']
+                })
+                confetti({
+                    particleCount: 2,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#22c55e', '#3b82f6', '#f59e0b']
+                })
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame)
+                }
+            }
+            frame()
+        }
+    }, [hasEnded, correctAnswers, game.questions.length])
 
     React.useEffect(() => {
         const interval = setInterval(() => {
