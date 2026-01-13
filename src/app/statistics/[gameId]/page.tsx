@@ -7,6 +7,7 @@ import { buttonVariants } from '@/components/ui/button'
 import { LucideLayoutDashboard, RotateCcw } from 'lucide-react'
 import ResultsCard from '@/components/statistics/ResultsCard'
 import AccuracyCard from '@/components/statistics/AccuracyCard'
+import TimeTakenCard from '@/components/statistics/TimeTakenCard'
 
 type Props = {
     params: {
@@ -66,6 +67,7 @@ const StatisticsPage = async ({params: {gameId}}: Props) => {
                 <div className="grid gap-4 mt-4 md:grid-cols-7">
                     <ResultsCard accuracy={accuracy} />
                     <AccuracyCard accuracy={accuracy} />
+                    <TimeTakenCard timeStarted={game.timeStarted} timeEnded={game.timeEnded} />
                 </div>
             </div>
         </>
