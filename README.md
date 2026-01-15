@@ -50,10 +50,6 @@ Status
 This project is a work in progress.
 Current focus areas:
 
-AI quiz generation
-
-User authentication and session handling
-
-Dashboard for managing quizzes
+Statistics Page
 
 Quiz history and analytics
