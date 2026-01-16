@@ -1,7 +1,6 @@
 "use client"
 
 import React from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { BrainCircuit } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
@@ -10,20 +9,15 @@ type Props = {}
 const QuizMeCard = (props: Props) => {
     const router = useRouter()
   return (
-    <Card className = "hover:cursor-pointer hover:opacity-75" onClick = {() => {
-        router.push("/quiz")
-    }}>
-        <CardHeader className = "flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className = "text-2xl font-bold">
-                Quiz Me!
-            </CardTitle>
-            <BrainCircuit size = {28} strokeWidth = {2.5} />
-        </CardHeader>
-
-        <CardContent>
-            <p className = "text-sm text-muted-foreground">Challenge yourself with a quiz!</p>
-        </CardContent>
-    </Card>
+    <button
+      onClick={() => router.push("/quiz")}
+      className="w-full px-6 py-8 rounded-xl bg-gradient-to-r from-slate-700 to-slate-800 text-white font-semibold text-lg transition-all hover:shadow-xl hover:from-slate-800 hover:to-slate-900 active:scale-95"
+    >
+      <div className="flex items-center justify-center gap-3">
+        <BrainCircuit size={24} strokeWidth={2} />
+        <span>Start Quiz</span>
+      </div>
+    </button>
   )
 }
 
