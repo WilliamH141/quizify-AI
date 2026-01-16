@@ -18,19 +18,34 @@ const Dashboard = async (props: Props) => {
         return redirect("/")
     }
   return (
-    <main className = "px-8 mx-auto max-w-7xl">
-        <div className="flex items-center"></div>
-            <h2 className = "mr-2 text-3xl font-bold tracking-tight">Dashboard</h2>
-        <div className="grid gap-4 mt-4 md:grid-cols-2">
-            <QuizMeCard/>
-            <HistoryCard/>
+    <main className="min-h-screen bg-gradient-to-br from-background via-background to-slate-50/30">
+      <section className="flex flex-col items-center justify-center px-8 pt-20 pb-20 text-center">
+        <div className="max-w-2xl">
+          <h1 className="text-6xl font-bold tracking-tight mb-4">
+            Master any topic
+          </h1>
+          <p className="text-xl text-muted-foreground mb-12">
+            Create AI-powered quizzes and track your learning journey
+          </p>
         </div>
+        <div className="w-full max-w-sm mb-16">
+          <QuizMeCard />
+        </div>
+      </section>
 
-        <div className="grid gap-4 mt-4 md:grid-cols-2 lg:grid-cols-7">
-            <HotTopicsCard/>
-            <RecentActivites/>
+      <section className="px-8 pb-20 mx-auto max-w-7xl">
+        <div className="grid gap-6 lg:grid-cols-3">
+          <div className="lg:col-span-2">
+            <RecentActivites />
+          </div>
+          <div>
+            <HistoryCard />
+          </div>
         </div>
-        
+        <div className="mt-6">
+          <HotTopicsCard />
+        </div>
+      </section>
     </main>
   )
 }
