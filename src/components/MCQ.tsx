@@ -96,6 +96,17 @@ const MCQ = ({game}: Props) => {
         }
     }, [hasEnded, correctAnswers, game.questions.length])
 
+    const handleSkip = React.useCallback(() => {
+        const nextIndex = questionIndex + 1
+        if (nextIndex === game.questions.length) {
+            setHasEnded(true)
+            toast.success("Quiz completed!")
+        } else {
+            setQuestionIndex(nextIndex)
+            setSelectedChoice(0)
+        }
+    }, [questionIndex, game.questions.length])
+
     const handleNext = React.useCallback(() => {
         checkAnswer(undefined)
     }, [checkAnswer, isChecking])
@@ -208,9 +219,14 @@ const MCQ = ({game}: Props) => {
                     </Button>
                 )
             })}
-            <Button className = "mt-2" onClick={handleNext} disabled={isChecking}>
-                Next <ChevronRight className = "w-4 h-4 ml-2"/>
-            </Button>
+            <div className='flex gap-2 mt-4'>
+                <Button variant='ghost' onClick={handleSkip} disabled={isChecking}>
+                    Skip
+                </Button>
+                <Button onClick={handleNext} disabled={isChecking} className='ml-auto'>
+                    Next <ChevronRight className = "w-4 h-4 ml-2"/>
+                </Button>
+            </div>
             <p className="text-xs text-slate-500 mt-4">
                 💡 Tip: Press 1-4 to select, Enter to submit, ESC to go back
             </p>

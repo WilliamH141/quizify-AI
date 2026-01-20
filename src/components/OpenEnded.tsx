@@ -69,6 +69,19 @@ const OpenEnded = ({game}: Props) => {
         checkAnswer(undefined)
     }, [userAnswer, checkAnswer])
 
+    const handleSkip = React.useCallback(() => {
+        const nextIndex = questionIndex + 1
+        if (nextIndex === game.questions.length) {
+            setHasEnded(true)
+            toast.success("Quiz completed!")
+        } else {
+            setShowFeedback(false)
+            setFeedback("")
+            setQuestionIndex(nextIndex)
+            setUserAnswer("")
+        }
+    }, [questionIndex, game.questions.length])
+
     const handleNextQuestion = React.useCallback(() => {
         const nextIndex = questionIndex + 1
         if (nextIndex === game.questions.length) {
@@ -223,14 +236,21 @@ const OpenEnded = ({game}: Props) => {
                 </div>
             )}
             
-            <Button 
-                className = "mt-4 w-full" 
-                onClick={showFeedback ? handleNextQuestion : handleNext} 
-                disabled={isChecking}
-            >
-                {isChecking ? "Checking..." : showFeedback ? "Next Question" : "Submit"} 
-                <ChevronRight className = "w-4 h-4 ml-2"/>
-            </Button>
+            <div className='flex gap-2 mt-4'>
+                {!showFeedback && (
+                    <Button variant='ghost' onClick={handleSkip} disabled={isChecking}>
+                        Skip
+                    </Button>
+                )}
+                <Button 
+                    className='ml-auto' 
+                    onClick={showFeedback ? handleNextQuestion : handleNext} 
+                    disabled={isChecking}
+                >
+                    {isChecking ? "Checking..." : showFeedback ? "Next Question" : "Submit"} 
+                    <ChevronRight className = "w-4 h-4 ml-2"/>
+                </Button>
+            </div>
             
             {!showFeedback && (
                 <p className="text-xs text-slate-500 mt-4">
