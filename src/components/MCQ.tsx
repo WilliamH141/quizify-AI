@@ -20,7 +20,7 @@ type Props = {
 
 const MCQ = ({game}: Props) => {
     const [ questionIndex, setQuestionIndex ] = React.useState(0)
-    const [selectedChoice, setSelectedChoice] = React.useState<number>(0)
+    const [selectedChoice, setSelectedChoice] = React.useState<number | undefined>(undefined)
     const [correctAnswers, setCorrectAnswers] = React.useState<number>(0)
     const [wrongAnswers, setWrongAnswers] = React.useState<number>(0)
     const [hasEnded, setHasEnded] = React.useState(false)
@@ -39,6 +39,9 @@ const MCQ = ({game}: Props) => {
 
     const {mutate: checkAnswer, isPending: isChecking} = useMutation({
         mutationFn: async () => {
+            if (selectedChoice === undefined) {
+                throw new Error("No option selected")
+            }
             const payload: z.infer<typeof checkAnswerSchema> = {
                 questionId: currentQuestion.id,
                 userAnswer: options[selectedChoice]}
@@ -62,7 +65,7 @@ const MCQ = ({game}: Props) => {
                 toast.success("Quiz completed!")
             } else {
                 setQuestionIndex(nextIndex)
-                setSelectedChoice(0)
+                setSelectedChoice(undefined)
             }
         }
     })
@@ -103,11 +106,15 @@ const MCQ = ({game}: Props) => {
             toast.success("Quiz completed!")
         } else {
             setQuestionIndex(nextIndex)
-            setSelectedChoice(0)
+            setSelectedChoice(undefined)
         }
     }, [questionIndex, game.questions.length])
 
     const handleNext = React.useCallback(() => {
+        if (selectedChoice === undefined) {
+            toast.error("Please select an option")
+            return
+        }
         checkAnswer(undefined)
     }, [checkAnswer, isChecking])
 
