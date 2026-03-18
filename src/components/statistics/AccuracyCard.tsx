@@ -2,8 +2,8 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Target } from "lucide-react";
 
-type Props = { 
-  accuracy: number 
+type Props = {
+  accuracy: number;
 };
 
 const AccuracyCard = ({ accuracy }: Props) => {

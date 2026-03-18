@@ -1,16 +1,22 @@
 import SignInButton from "@/components/SignInButton";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { getAuthSession } from "@/lib/nextauth";
 import { redirect } from "next/navigation";
 import { BookOpenCheck, Clock3, Trophy, Users } from "lucide-react";
 
-export default async function Home() {  
+export default async function Home() {
   const session = await getAuthSession();
 
   if (session?.user) {
     return redirect("/dashboard");
   }
-  
+
   return (
     <main className="min-h-[calc(100vh-4rem)] bg-background">
       <section className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-16 md:py-20">
@@ -22,7 +28,8 @@ export default async function Home() {
             Make quizzes in minutes. Play with friends.
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-base text-muted-foreground sm:text-lg">
-            Build multiple-choice or open-ended quizzes, share them, and track your progress over time.
+            Build multiple-choice or open-ended quizzes, share them, and track
+            your progress over time.
           </p>
 
           <div className="mt-8 flex justify-center">
@@ -34,7 +41,9 @@ export default async function Home() {
           <Card className="border-border/80 bg-card">
             <CardHeader className="pb-2">
               <BookOpenCheck className="h-5 w-5 text-blue-500" />
-              <CardTitle className="text-base">Create quizzes quickly</CardTitle>
+              <CardTitle className="text-base">
+                Create quizzes quickly
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <CardDescription>

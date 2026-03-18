@@ -1,22 +1,22 @@
-import HistoryCard from '@/components/dashboard/HistoryCard'
-import HotTopicsCard from '@/components/dashboard/HotTopicsCard'
-import QuizMeCard from '@/components/dashboard/QuizMeCard'
-import RecentActivites from '@/components/dashboard/RecentActivites'
-import { getAuthSession } from '@/lib/nextauth'
-import { redirect } from 'next/navigation'
-import React from 'react'
+import HistoryCard from "@/components/dashboard/HistoryCard";
+import HotTopicsCard from "@/components/dashboard/HotTopicsCard";
+import QuizMeCard from "@/components/dashboard/QuizMeCard";
+import RecentActivites from "@/components/dashboard/RecentActivites";
+import { getAuthSession } from "@/lib/nextauth";
+import { redirect } from "next/navigation";
+import React from "react";
 
-type Props = {}
+type Props = {};
 
 export const metadata = {
-    title: "DashBoard | Quizify"
-}
+  title: "DashBoard | Quizify",
+};
 
 const Dashboard = async (props: Props) => {
-    const session = await getAuthSession()
-    if (!session?.user) {
-        return redirect("/")
-    }
+  const session = await getAuthSession();
+  if (!session?.user) {
+    return redirect("/");
+  }
   return (
     <main className="min-h-screen bg-gradient-to-br from-background via-background to-slate-50/30">
       <section className="flex flex-col items-center justify-center px-8 pt-20 pb-20 text-center">
@@ -47,7 +47,7 @@ const Dashboard = async (props: Props) => {
         </div>
       </section>
     </main>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

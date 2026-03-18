@@ -18,7 +18,8 @@ It allows users to create and manage quizzes automatically using AI-generated co
    ```bash
    git clone https://github.com/yourusername/quizify-ai.git
    cd quizify-ai
-Install dependencies:
+   Install dependencies:
+   ```
 
 bash
 Copy code

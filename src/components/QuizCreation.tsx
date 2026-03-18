@@ -1,11 +1,17 @@
-"use client"
+"use client";
 
-import React from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
-import { useForm, Controller } from "react-hook-form"
-import { quizCreationSchema } from "@/schemas/form/quiz"
-import z from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
+import React from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import { useForm, Controller } from "react-hook-form";
+import { quizCreationSchema } from "@/schemas/form/quiz";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
   Field,
@@ -13,30 +19,30 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-import {useMutation} from '@tanstack/react-query'
-import axios from "axios"
-import { useRouter } from "next/navigation"
-import { Button } from "./ui/button"
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { Button } from "./ui/button";
 
-type Props = {}
+type Props = {};
 
-type InputType = z.infer<typeof quizCreationSchema>
+type InputType = z.infer<typeof quizCreationSchema>;
 
 const QuizCreation = (props: Props) => {
-  const router = useRouter()
-  const {mutate: getQuestions, isPending} = useMutation({
-    mutationFn: async ({amount, topic, type}: InputType) => {
-      const response = await axios.post('/api/game', {
+  const router = useRouter();
+  const { mutate: getQuestions, isPending } = useMutation({
+    mutationFn: async ({ amount, topic, type }: InputType) => {
+      const response = await axios.post("/api/game", {
         amount,
         topic,
-        type
-      })
+        type,
+      });
 
-      return response.data
-    }
-  })
+      return response.data;
+    },
+  });
   const form = useForm<InputType>({
     resolver: zodResolver(quizCreationSchema),
     defaultValues: {
@@ -45,29 +51,30 @@ const QuizCreation = (props: Props) => {
       type: undefined,
     },
     mode: "onSubmit",
-  })
+  });
 
   const onSubmit = (values: InputType) => {
-    getQuestions({
-      amount: values.amount,
-      topic: values.topic,
-      type: values.type,
-      
-    },
-  {
-    onSuccess: ({gameId}) => {
-      if (form.getValues('type') == 'open_ended') {
-        router.push(`/play/open-ended/${gameId}`)
-      } else {
-        router.push(`/play/mcq/${gameId}`)
-      }
-    }
-  })
-  }
+    getQuestions(
+      {
+        amount: values.amount,
+        topic: values.topic,
+        type: values.type,
+      },
+      {
+        onSuccess: ({ gameId }) => {
+          if (form.getValues("type") == "open_ended") {
+            router.push(`/play/open-ended/${gameId}`);
+          } else {
+            router.push(`/play/mcq/${gameId}`);
+          }
+        },
+      },
+    );
+  };
 
   return (
     <div className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-      <Card className = "w-[400px]">
+      <Card className="w-[400px]">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Quiz Creation</CardTitle>
           <CardDescription>Choose a topic</CardDescription>
@@ -85,7 +92,9 @@ const QuizCreation = (props: Props) => {
                   aria-invalid={!!form.formState.errors.topic}
                   {...form.register("topic")}
                 />
-                <FieldDescription>What should the quiz be about?</FieldDescription>
+                <FieldDescription>
+                  What should the quiz be about?
+                </FieldDescription>
                 {!!form.formState.errors.topic && (
                   <FieldError errors={[form.formState.errors.topic]} />
                 )}
@@ -97,7 +106,9 @@ const QuizCreation = (props: Props) => {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="amount">Number of Questions</FieldLabel>
+                    <FieldLabel htmlFor="amount">
+                      Number of Questions
+                    </FieldLabel>
                     <Input
                       id="amount"
                       placeholder="e.g. 5"
@@ -105,11 +116,19 @@ const QuizCreation = (props: Props) => {
                       inputMode="numeric"
                       aria-invalid={fieldState.invalid}
                       value={field.value ?? ""}
-                      onChange={(e) => field.onChange(e.target.value === "" ? "" : Number(e.target.value))}
+                      onChange={(e) =>
+                        field.onChange(
+                          e.target.value === "" ? "" : Number(e.target.value),
+                        )
+                      }
                       onBlur={field.onBlur}
                     />
-                    <FieldDescription>How many questions do you want?</FieldDescription>
-                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                    <FieldDescription>
+                      How many questions do you want?
+                    </FieldDescription>
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
                   </Field>
                 )}
               />
@@ -120,7 +139,9 @@ const QuizCreation = (props: Props) => {
                 <div className="flex gap-2">
                   <Button
                     type="button"
-                    variant={form.watch("type") === "mcq" ? "default" : "secondary"}
+                    variant={
+                      form.watch("type") === "mcq" ? "default" : "secondary"
+                    }
                     className="flex-1"
                     onClick={() => form.setValue("type", "mcq")}
                   >
@@ -128,14 +149,20 @@ const QuizCreation = (props: Props) => {
                   </Button>
                   <Button
                     type="button"
-                    variant={form.watch("type") === "open_ended" ? "default" : "secondary"}
+                    variant={
+                      form.watch("type") === "open_ended"
+                        ? "default"
+                        : "secondary"
+                    }
                     className="flex-1"
                     onClick={() => form.setValue("type", "open_ended")}
                   >
                     Open-ended
                   </Button>
                 </div>
-                <FieldDescription>Choose how questions should be formatted.</FieldDescription>
+                <FieldDescription>
+                  Choose how questions should be formatted.
+                </FieldDescription>
                 {!!form.formState.errors.type && (
                   <FieldError errors={[form.formState.errors.type]} />
                 )}
@@ -153,7 +180,7 @@ const QuizCreation = (props: Props) => {
         </CardContent>
       </Card>
     </div>
-  )
-}
+  );
+};
 
-export default QuizCreation
+export default QuizCreation;

@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import React from 'react'
-import { BrainCircuit } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import React from "react";
+import { BrainCircuit } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-type Props = {}
+type Props = {};
 
 const QuizMeCard = (props: Props) => {
-    const router = useRouter()
+  const router = useRouter();
   return (
     <button
       onClick={() => router.push("/quiz")}
@@ -18,8 +18,7 @@ const QuizMeCard = (props: Props) => {
         <span>Start Quiz</span>
       </div>
     </button>
-  )
-}
+  );
+};
 
-export default QuizMeCard
-
+export default QuizMeCard;

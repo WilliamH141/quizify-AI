@@ -14,4 +14,4 @@ if (process.env.NODE_ENV === "production") {
     global.cachedPrisma = new PrismaClient();
   }
   prisma = global.cachedPrisma;
-} 
+}

@@ -17,7 +17,7 @@ export async function strict_output(
   model: string = "gpt-4.1-mini", // can change, using this for testing
   temperature: number = 1,
   num_tries: number = 3,
-  verbose: boolean = false
+  verbose: boolean = false,
 ) {
   // if the user input is in a list, we also process the output as a list of json
   const list_input: boolean = Array.isArray(user_prompt);
@@ -31,9 +31,11 @@ export async function strict_output(
 
   for (let i = 0; i < num_tries; i++) {
     let output_format_prompt: string = `\nYou must respond with ${
-      list_output ? "an array of JSON objects matching" : "a JSON object matching"
+      list_output
+        ? "an array of JSON objects matching"
+        : "a JSON object matching"
     } the following schema: ${JSON.stringify(
-      output_format
+      output_format,
     )}.\nReturn ONLY valid JSON. Do not include explanations, markdown, or surrounding text.`;
 
     if (list_output) {
@@ -80,7 +82,7 @@ export async function strict_output(
     if (verbose) {
       console.log(
         "System prompt:",
-        system_prompt + output_format_prompt + error_msg
+        system_prompt + output_format_prompt + error_msg,
       );
       console.log("\nUser prompt:", user_prompt);
       console.log("\nRaw GPT response:", res);

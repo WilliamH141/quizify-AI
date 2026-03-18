@@ -6,7 +6,7 @@ import Navbar from "@/components/Navbar";
 import Providers from "@/components/Providers";
 import { Toaster } from "@/components/ui/sonner";
 
-const inter = Inter({subsets: ["latin"]});
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Quizify",
@@ -20,17 +20,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={
-          cn(inter.className, 'antialiased min-h-screen pt-16')}>
-            <Providers>
-
-              <Navbar/>
-              {children}
-              <Toaster/>
-
-            </Providers>
-
+      <body className={cn(inter.className, "antialiased min-h-screen pt-16")}>
+        <Providers>
+          <Navbar />
+          {children}
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );
