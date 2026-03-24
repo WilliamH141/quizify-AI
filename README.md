@@ -40,7 +40,7 @@ Users can create quizzes from a topic, take them, and have results stored and tr
 
 Clone the repo:
 
-git clone https://github.com/yourusername/quizify-ai.git  
+git clone https://github.com/WilliamH141/quizify-ai.git  
 cd quizify-ai  
 npm install  
 
