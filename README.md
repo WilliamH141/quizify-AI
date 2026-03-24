@@ -1,56 +1,74 @@
 # Quizify AI
 
-Quizify AI is an AI-powered quiz generation platform built with Next.js, Prisma, and Supabase.  
-It allows users to create and manage quizzes automatically using AI-generated content.
+Quizify AI is a full-stack web app that generates quizzes using AI. The goal was to explore how large language models can be integrated into real applications to automate content creation and user workflows.
+
+Users can create quizzes from a topic, take them, and have results stored and tracked over time.
+
+---
+
+## What I built
+
+- Integrated the OpenAI API to generate quiz questions dynamically  
+- Built backend workflows to handle prompt construction and parse AI responses into structured quiz data  
+- Designed a full-stack system with authentication, database storage, and API routes  
+- Implemented quiz creation, scoring, and persistence using PostgreSQL (Supabase)  
+
+---
 
 ## Tech Stack
 
-- Framework: Next.js (App Router)
-- Database: Supabase (PostgreSQL)
-- ORM: Prisma
-- Styling: Tailwind CSS + shadcn/ui
-- Authentication: NextAuth.js
-- AI Integration: OpenAI API
+- Next.js (App Router)  
+- TypeScript  
+- Supabase (PostgreSQL)  
+- Prisma ORM  
+- NextAuth.js  
+- Tailwind CSS + shadcn/ui  
+- OpenAI API  
 
-## Setup
+---
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/quizify-ai.git
-   cd quizify-ai
-   Install dependencies:
-   ```
+## Features
 
-bash
-Copy code
-npm install
-Create a .env file in the root directory and add:
+- AI-generated quizzes based on user input  
+- User authentication and persistent data storage  
+- Quiz history and scoring  
+- Modular backend structure for extending AI functionality  
 
-bash
-Copy code
-DATABASE_URL="postgres_connection"
-NEXTAUTH_SECRET="your_secret"
-GOOGLE_CLIENT_ID="your_google_client_id"
-GOOGLE_CLIENT_SECRET="your_google_client_secret"
-OPENAI_API_KEY="your_openai_key"
-API_URL="http://localhost:3000"
-Push the Prisma schema:
+---
 
-bash
-Copy code
-npx prisma db push
-Run the development server:
+## Running locally
 
-bash
-Copy code
-npm run dev
-Open your browser at:
-http://localhost:3000
+Clone the repo:
 
-Status
-This project is a work in progress.
-Current focus areas:
+git clone https://github.com/yourusername/quizify-ai.git  
+cd quizify-ai  
+npm install  
 
-Statistics Page
+Create a `.env` file:
 
-Quiz history and analytics
+DATABASE_URL="..."  
+NEXTAUTH_SECRET="..."  
+GOOGLE_CLIENT_ID="..."  
+GOOGLE_CLIENT_SECRET="..."  
+OPENAI_API_KEY="..."  
+
+Then run:
+
+npx prisma db push  
+npm run dev  
+
+App runs at: http://localhost:3000
+
+---
+
+## Current focus
+
+- Improving quiz quality and consistency  
+- Adding analytics and performance tracking  
+- Refining UI/UX  
+
+---
+
+## Notes
+
+This project is still in progress, but it reflects my interest in building practical applications on top of AI systems rather than just using them in isolation.
