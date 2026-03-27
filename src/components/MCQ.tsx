@@ -26,7 +26,7 @@ const MCQ = ({ game }: Props) => {
   const [correctAnswers, setCorrectAnswers] = React.useState<number>(0);
   const [wrongAnswers, setWrongAnswers] = React.useState<number>(0);
   const [hasEnded, setHasEnded] = React.useState(false);
-  const [now, setNow] = React.useState<Date>(new Date());
+  const [now, setNow] = React.useState<Date | null>(null);
   const [streak, setStreak] = React.useState<number>(0);
 
   const currentQuestion = React.useMemo(() => {
@@ -139,6 +139,9 @@ const MCQ = ({ game }: Props) => {
   }, [options.length, handleNext]);
 
   React.useEffect(() => {
+    // initialize now after hydration
+    setNow(new Date());
+
     const interval = setInterval(() => {
       if (!hasEnded) {
         setNow(new Date());
@@ -154,9 +157,13 @@ const MCQ = ({ game }: Props) => {
           <div className="flex flex-col justify-center items-center">
             <div className="px-4 mt-2 font-semibold text-white bg-green-500 rounded-md whitespace-nowrap">
               You completed in{" "}
-              {formatTimeDelta(
-                Math.round((now.getTime() - game.timeStarted.getTime()) / 1000),
-              )}
+              {now
+                ? formatTimeDelta(
+                    Math.round(
+                      (now.getTime() - game.timeStarted.getTime()) / 1000,
+                    ),
+                  )
+                : "0s"}
             </div>
             <div className="mt-4">
               <p className="text-2xl font-bold">
@@ -182,11 +189,13 @@ const MCQ = ({ game }: Props) => {
               <div className="flex self-start mt-3 text-slate-400">
                 <Timer className="mr-2" />
                 <span>
-                  {formatTimeDelta(
-                    Math.round(
-                      (now.getTime() - game.timeStarted.getTime()) / 1000,
-                    ),
-                  )}
+                  {now
+                    ? formatTimeDelta(
+                        Math.round(
+                          (now.getTime() - game.timeStarted.getTime()) / 1000,
+                        ),
+                      )
+                    : "0s"}
                 </span>
               </div>
               {streak > 0 && (
