@@ -17,30 +17,30 @@ const RecentActivites = (props: Props) => {
     { title: "World history", meta: "Tue • 5:03 PM", stat: "Score 78%" },
   ];
   return (
-    <Card className="col-span-4 lg:col-span-3 rounded-xl border border-slate-700/60 bg-slate-900/70 shadow-md">
+    <Card className="col-span-4 lg:col-span-3 rounded-xl border shadow-sm">
       <CardHeader>
-        <CardTitle className="text-xl font-semibold text-slate-100">
+        <CardTitle className="text-xl font-semibold">
           Recent Activities
         </CardTitle>
-        <CardDescription className="text-slate-400">
-          Your latest quiz runs
-        </CardDescription>
+        <CardDescription>Your latest quiz runs</CardDescription>
       </CardHeader>
 
       <CardContent className="space-y-3 pt-0">
         {items.map((item) => (
           <div
             key={item.title}
-            className="flex items-center justify-between rounded-lg border border-slate-700/60 bg-slate-800/80 px-4 py-3"
+            className="flex items-center justify-between rounded-lg border bg-muted px-4 py-3"
           >
             <div>
-              <p className="text-sm font-medium text-slate-100">{item.title}</p>
-              <div className="flex items-center gap-2 text-xs text-slate-400">
+              <p className="text-sm font-medium text-foreground">
+                {item.title}
+              </p>
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
                 <Clock3 size={14} />
                 <span>{item.meta}</span>
               </div>
             </div>
-            <span className="text-sm font-semibold text-slate-100">
+            <span className="text-sm font-semibold text-foreground">
               {item.stat}
             </span>
           </div>

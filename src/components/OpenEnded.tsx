@@ -151,7 +151,7 @@ const OpenEnded = ({ game }: Props) => {
       {hasEnded ? (
         <div className="absolute -translate-x-1/2 -translate-y-1/2 md:w-[80vw] max-w-4xl w-[90vw] top-1/2 left-1/2">
           <div className="flex flex-col justify-center items-center">
-            <div className="px-4 mt-2 font-semibold text-white bg-green-500 rounded-md whitespace-nowrap">
+            <div className="px-4 py-2 mt-2 font-semibold text-primary-foreground bg-primary rounded-md whitespace-nowrap">
               You completed in{" "}
               {formatTimeDelta(
                 Math.round((now.getTime() - game.timeStarted.getTime()) / 1000),
@@ -172,12 +172,12 @@ const OpenEnded = ({ game }: Props) => {
           <div className="flex flex-row justify-between">
             <div className="flex flex-col">
               <p>
-                <span className="text-slate-400 mr-2">Topic</span>
-                <span className="px-2 py-1 text-white rounded-lg bg-slate-800">
+                <span className="text-muted-foreground mr-2">Topic</span>
+                <span className="px-2 py-1 rounded-lg bg-muted border border-border text-foreground">
                   {game.topic}
                 </span>
               </p>
-              <div className="flex self-start mt-3 text-slate-400">
+              <div className="flex self-start mt-3 text-muted-foreground">
                 <Timer className="mr-2" />
                 <span>
                   {formatTimeDelta(
@@ -200,9 +200,9 @@ const OpenEnded = ({ game }: Props) => {
           </div>
 
           {/* Progress bar */}
-          <div className="w-full bg-slate-700 rounded-full h-2 mt-4">
+          <div className="w-full bg-muted rounded-full h-2 mt-4">
             <div
-              className="bg-blue-500 h-2 rounded-full transition-all"
+              className="bg-primary h-2 rounded-full transition-all"
               style={{
                 width: `${((questionIndex + 1) / game.questions.length) * 100}%`,
               }}
@@ -211,9 +211,9 @@ const OpenEnded = ({ game }: Props) => {
 
           <Card className="w-full mt-4">
             <CardHeader className="flex flex-row items-center">
-              <CardTitle className="mr-5 text-center divide-y divide-zinc-800/50">
+              <CardTitle className="mr-5 text-center">
                 <div>{questionIndex + 1}</div>
-                <div className="text-base text-slate-400">
+                <div className="text-base text-muted-foreground">
                   {game.questions.length}
                 </div>
               </CardTitle>
@@ -238,12 +238,12 @@ const OpenEnded = ({ game }: Props) => {
             />
 
             {showFeedback && feedback && (
-              <div className="w-full mt-4 p-4 bg-blue-500/20 border border-blue-500 rounded-lg">
-                <p className="text-sm text-blue-200">
+              <div className="w-full mt-4 p-4 bg-muted border border-border rounded-lg">
+                <p className="text-sm text-foreground">
                   <span className="font-semibold">Feedback: </span>
                   {feedback}
                 </p>
-                <p className="text-sm text-green-200 mt-2">
+                <p className="text-sm text-foreground mt-2">
                   <span className="font-semibold">Correct Answer: </span>
                   {currentQuestion.answer}
                 </p>
@@ -275,7 +275,7 @@ const OpenEnded = ({ game }: Props) => {
             </div>
 
             {!showFeedback && (
-              <p className="text-xs text-slate-500 mt-4">
+              <p className="text-xs text-muted-foreground mt-4">
                 💡 Tip: Press Enter to submit, ESC to go back
               </p>
             )}

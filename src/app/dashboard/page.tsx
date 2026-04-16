@@ -18,7 +18,7 @@ const Dashboard = async (props: Props) => {
     return redirect("/");
   }
   return (
-    <main className="min-h-screen bg-gradient-to-br from-background via-background to-slate-50/30">
+    <main className="min-h-screen bg-background">
       <section className="flex flex-col items-center justify-center px-8 pt-20 pb-20 text-center">
         <div className="max-w-2xl">
           <h1 className="text-6xl font-bold tracking-tight mb-4">
