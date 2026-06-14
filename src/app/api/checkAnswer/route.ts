@@ -68,6 +68,7 @@ export async function POST(req: Request, res: Response) {
         where: { id: questionId },
         data: {
           isCorrect,
+          percentageCorrect: isCorrect ? 1 : 0,
         },
       });
       return NextResponse.json(
