@@ -8,7 +8,7 @@ import { Button } from "./ui/button";
 import MCQCounter from "./MCQCounter";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
-import { checkAnswerSchema } from "@/schemas/form/quiz";
+import { checkAnswerSchema, endGameSchema } from "@/schemas/form/quiz";
 import z from "zod";
 import { toast } from "sonner";
 import { formatTimeDelta } from "@/lib/utils";
@@ -72,6 +72,20 @@ const MCQ = ({ game }: Props) => {
       }
     },
   });
+
+  const { mutate: endGame } = useMutation({
+    mutationFn: async () => {
+      const payload: z.infer<typeof endGameSchema> = { gameId: game.id };
+      const response = await axios.post("/api/endGame", payload);
+      return response.data;
+    },
+  });
+
+  React.useEffect(() => {
+    if (hasEnded) {
+      endGame();
+    }
+  }, [hasEnded, endGame]);
 
   React.useEffect(() => {
     if (hasEnded && correctAnswers === game.questions.length) {

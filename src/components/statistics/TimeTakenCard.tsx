@@ -10,7 +10,7 @@ type Props = {
 
 const TimeTakenCard = ({ timeStarted, timeEnded }: Props) => {
   const timeTaken = Math.round(
-    (timeEnded ? timeEnded.getTime() : Date.now() - timeStarted.getTime()) /
+    ((timeEnded ? timeEnded.getTime() : Date.now()) - timeStarted.getTime()) /
       1000,
   );
 
