@@ -1,16 +1,22 @@
 import { prisma } from "@/lib/db";
+import { getAuthSession } from "@/lib/nextauth";
 import { endGameSchema } from "@/schemas/form/quiz";
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 
 export async function POST(req: Request) {
   try {
+    const session = await getAuthSession();
+    if (!session?.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await req.json();
     const { gameId } = endGameSchema.parse(body);
     const game = await prisma.game.findUnique({
       where: { id: gameId },
     });
-    if (!game) {
+    if (!game || game.userId !== session.user.id) {
       return NextResponse.json({ error: "Game not found" }, { status: 404 });
     }
 

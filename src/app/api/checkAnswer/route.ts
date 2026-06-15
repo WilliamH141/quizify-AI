@@ -1,17 +1,24 @@
 import { prisma } from "@/lib/db";
+import { getAuthSession } from "@/lib/nextauth";
 import { checkAnswerSchema } from "@/schemas/form/quiz";
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 import { strict_output } from "@/lib/gpt";
 
-export async function POST(req: Request, res: Response) {
+export async function POST(req: Request) {
   try {
+    const session = await getAuthSession();
+    if (!session?.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await req.json();
     const { questionId, userAnswer } = checkAnswerSchema.parse(body);
     const question = await prisma.question.findUnique({
       where: { id: questionId },
+      include: { game: { select: { userId: true } } },
     });
-    if (!question) {
+    if (!question || question.game.userId !== session.user.id) {
       return NextResponse.json(
         {
           error: "question not found",
