@@ -29,7 +29,7 @@ const OpenEndedPage = async ({ params: { gameid } }: Props) => {
       },
     },
   });
-  if (!game || game.gameType !== "open_ended") {
+  if (!game || game.gameType !== "open_ended" || game.questions.length === 0) {
     return redirect("/quiz");
   }
 

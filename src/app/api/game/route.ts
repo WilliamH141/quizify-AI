@@ -33,6 +33,15 @@ export async function POST(req: Request) {
       type,
     });
 
+    if (!data?.questions || data.questions.length === 0) {
+      // Question generation failed; don't leave an empty orphan game behind.
+      await prisma.game.delete({ where: { id: game.id } });
+      return NextResponse.json(
+        { error: "Failed to generate questions. Please try again." },
+        { status: 500 },
+      );
+    }
+
     if (type == "mcq") {
       type mcqQuestion = {
         question: string;

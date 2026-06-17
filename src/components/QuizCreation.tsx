@@ -24,6 +24,7 @@ import { Input } from "@/components/ui/input";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { Button } from "./ui/button";
 
 type Props = {};
@@ -67,6 +68,9 @@ const QuizCreation = (props: Props) => {
           } else {
             router.push(`/play/mcq/${gameId}`);
           }
+        },
+        onError: () => {
+          toast.error("Failed to create quiz. Please try again.");
         },
       },
     );
