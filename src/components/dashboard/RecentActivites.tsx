@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import {
   Card,
   CardHeader,
@@ -7,15 +8,26 @@ import {
   CardContent,
 } from "../ui/card";
 import { Clock3 } from "lucide-react";
+import { prisma } from "@/lib/db";
+import { getAuthSession } from "@/lib/nextauth";
 
-type Props = {};
+const RecentActivites = async () => {
+  const session = await getAuthSession();
+  if (!session?.user) {
+    return null;
+  }
 
-const RecentActivites = (props: Props) => {
-  const items = [
-    { title: "Algebra basics", meta: "Today • 10:24 AM", stat: "Score 92%" },
-    { title: "Biology flash", meta: "Yesterday • 7:12 PM", stat: "Score 85%" },
-    { title: "World history", meta: "Tue • 5:03 PM", stat: "Score 78%" },
-  ];
+  const games = await prisma.game.findMany({
+    where: { userId: session.user.id },
+    include: {
+      questions: {
+        select: { isCorrect: true, percentageCorrect: true },
+      },
+    },
+    orderBy: { timeStarted: "desc" },
+    take: 3,
+  });
+
   return (
     <Card className="col-span-4 lg:col-span-3 rounded-xl border shadow-sm">
       <CardHeader>
@@ -26,25 +38,58 @@ const RecentActivites = (props: Props) => {
       </CardHeader>
 
       <CardContent className="space-y-3 pt-0">
-        {items.map((item) => (
-          <div
-            key={item.title}
-            className="flex items-center justify-between rounded-lg border bg-muted px-4 py-3"
-          >
-            <div>
-              <p className="text-sm font-medium text-foreground">
-                {item.title}
-              </p>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <Clock3 size={14} />
-                <span>{item.meta}</span>
-              </div>
-            </div>
-            <span className="text-sm font-semibold text-foreground">
-              {item.stat}
-            </span>
-          </div>
-        ))}
+        {games.length === 0 ? (
+          <p className="text-sm text-muted-foreground">
+            No quizzes yet — start one to see it here.
+          </p>
+        ) : (
+          games.map((game) => {
+            const totalQuestions = game.questions.length;
+            let accuracy = 0;
+            if (totalQuestions > 0) {
+              if (game.gameType === "mcq") {
+                const totalCorrect = game.questions.reduce(
+                  (count, q) => (q.isCorrect ? count + 1 : count),
+                  0,
+                );
+                accuracy = (totalCorrect / totalQuestions) * 100;
+              } else {
+                const totalPercentage = game.questions.reduce(
+                  (count, q) => count + (q.percentageCorrect || 0),
+                  0,
+                );
+                accuracy = (totalPercentage / totalQuestions) * 100;
+              }
+            }
+
+            const startedAt = new Date(game.timeStarted);
+            const meta = `${startedAt.toLocaleDateString()} • ${startedAt.toLocaleTimeString(
+              [],
+              { hour: "2-digit", minute: "2-digit" },
+            )}`;
+
+            return (
+              <Link
+                key={game.id}
+                href={`/statistics/${game.id}`}
+                className="flex items-center justify-between rounded-lg border bg-muted px-4 py-3 transition-colors hover:bg-muted/70"
+              >
+                <div>
+                  <p className="text-sm font-medium text-foreground">
+                    {game.topic}
+                  </p>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Clock3 size={14} />
+                    <span>{meta}</span>
+                  </div>
+                </div>
+                <span className="text-sm font-semibold text-foreground">
+                  Score {Math.round(accuracy)}%
+                </span>
+              </Link>
+            );
+          })
+        )}
       </CardContent>
     </Card>
   );
