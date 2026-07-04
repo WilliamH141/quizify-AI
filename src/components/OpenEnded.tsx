@@ -24,7 +24,7 @@ const OpenEnded = ({ game }: Props) => {
   const [correctAnswers, setCorrectAnswers] = React.useState<number>(0);
   const [wrongAnswers, setWrongAnswers] = React.useState<number>(0);
   const [hasEnded, setHasEnded] = React.useState(false);
-  const [now, setNow] = React.useState<Date>(new Date());
+  const [now, setNow] = React.useState<Date | null>(null);
   const [userAnswer, setUserAnswer] = React.useState<string>("");
   const [streak, setStreak] = React.useState<number>(0);
   const [feedback, setFeedback] = React.useState<string>("");
@@ -69,20 +69,7 @@ const OpenEnded = ({ game }: Props) => {
     checkAnswer(undefined);
   }, [userAnswer, checkAnswer]);
 
-  const handleSkip = React.useCallback(() => {
-    const nextIndex = questionIndex + 1;
-    if (nextIndex === game.questions.length) {
-      setHasEnded(true);
-      toast.success("Quiz completed!");
-    } else {
-      setShowFeedback(false);
-      setFeedback("");
-      setQuestionIndex(nextIndex);
-      setUserAnswer("");
-    }
-  }, [questionIndex, game.questions.length]);
-
-  const handleNextQuestion = React.useCallback(() => {
+  const goToNextQuestion = React.useCallback(() => {
     const nextIndex = questionIndex + 1;
     if (nextIndex === game.questions.length) {
       setHasEnded(true);
@@ -152,6 +139,9 @@ const OpenEnded = ({ game }: Props) => {
   }, [hasEnded, correctAnswers, game.questions.length]);
 
   React.useEffect(() => {
+    // initialise now after hydration to avoid SSR/client timer mismatch
+    setNow(new Date());
+
     const interval = setInterval(() => {
       if (!hasEnded) {
         setNow(new Date());
@@ -167,9 +157,13 @@ const OpenEnded = ({ game }: Props) => {
           <div className="flex flex-col justify-center items-center">
             <div className="px-4 py-2 mt-2 font-semibold text-primary-foreground bg-primary rounded-md whitespace-nowrap">
               You completed in{" "}
-              {formatTimeDelta(
-                Math.round((now.getTime() - game.timeStarted.getTime()) / 1000),
-              )}
+              {now
+                ? formatTimeDelta(
+                    Math.round(
+                      (now.getTime() - game.timeStarted.getTime()) / 1000,
+                    ),
+                  )
+                : "0s"}
             </div>
             <div className="mt-4">
               <p className="text-2xl font-bold">
@@ -194,11 +188,13 @@ const OpenEnded = ({ game }: Props) => {
               <div className="flex self-start mt-3 text-muted-foreground">
                 <Timer className="mr-2" />
                 <span>
-                  {formatTimeDelta(
-                    Math.round(
-                      (now.getTime() - game.timeStarted.getTime()) / 1000,
-                    ),
-                  )}
+                  {now
+                    ? formatTimeDelta(
+                        Math.round(
+                          (now.getTime() - game.timeStarted.getTime()) / 1000,
+                        ),
+                      )
+                    : "0s"}
                 </span>
               </div>
               {streak > 0 && (
@@ -268,7 +264,7 @@ const OpenEnded = ({ game }: Props) => {
               {!showFeedback && (
                 <Button
                   variant="ghost"
-                  onClick={handleSkip}
+                  onClick={goToNextQuestion}
                   disabled={isChecking}
                 >
                   Skip
@@ -276,7 +272,7 @@ const OpenEnded = ({ game }: Props) => {
               )}
               <Button
                 className="ml-auto"
-                onClick={showFeedback ? handleNextQuestion : handleNext}
+                onClick={showFeedback ? goToNextQuestion : handleNext}
                 disabled={isChecking}
               >
                 {isChecking
