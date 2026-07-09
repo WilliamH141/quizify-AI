@@ -170,9 +170,14 @@ const OpenEnded = ({ game }: Props) => {
                 Your Score: {correctAnswers} / {game.questions.length}
               </p>
             </div>
-            <a href={`/statistics/${game.id}`} className="mt-4">
-              <Button>View Statistics</Button>
-            </a>
+            <div className="flex gap-3 mt-4">
+              <a href={`/statistics/${game.id}`}>
+                <Button>View Statistics</Button>
+              </a>
+              <a href="/quiz">
+                <Button variant="secondary">New Quiz</Button>
+              </a>
+            </div>
           </div>
         </div>
       ) : (
