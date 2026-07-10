@@ -29,7 +29,12 @@ const MCQPage = async ({ params: { gameid } }: Props) => {
       },
     },
   });
-  if (!game || game.gameType !== "mcq" || game.questions.length === 0) {
+  if (
+    !game ||
+    game.userId !== session.user.id ||
+    game.gameType !== "mcq" ||
+    game.questions.length === 0
+  ) {
     return redirect("/quiz");
   }
 

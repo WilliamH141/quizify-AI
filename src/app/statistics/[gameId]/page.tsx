@@ -30,7 +30,7 @@ const StatisticsPage = async ({ params: { gameId } }: Props) => {
     },
   });
 
-  if (!game) return redirect("/quiz");
+  if (!game || game.userId !== session.user.id) return redirect("/dashboard");
 
   // calculate accuracy
   let accuracy = 0;
