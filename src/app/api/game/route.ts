@@ -3,7 +3,7 @@ import { getAuthSession } from "@/lib/nextauth";
 import { quizCreationSchema } from "@/schemas/form/quiz";
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
-import axios from "axios";
+import { generateQuestions, type MCQQuestion } from "@/lib/questions";
 
 export async function POST(req: Request) {
   try {
@@ -27,13 +27,9 @@ export async function POST(req: Request) {
       },
     });
 
-    const { data } = await axios.post(`${process.env.API_URL}/api/questions`, {
-      amount,
-      topic,
-      type,
-    });
+    const questions = await generateQuestions({ amount, topic, type });
 
-    if (!data?.questions || data.questions.length === 0) {
+    if (!questions || questions.length === 0) {
       // Question generation failed; don't leave an empty orphan game behind.
       await prisma.game.delete({ where: { id: game.id } });
       return NextResponse.json(
@@ -43,14 +39,7 @@ export async function POST(req: Request) {
     }
 
     if (type == "mcq") {
-      type mcqQuestion = {
-        question: string;
-        answer: string;
-        option1: string;
-        option2: string;
-        option3: string;
-      };
-      let manyData = data.questions.map((question: mcqQuestion) => {
+      const manyData = (questions as MCQQuestion[]).map((question) => {
         let options = [
           question.answer,
           question.option1,
@@ -63,24 +52,19 @@ export async function POST(req: Request) {
           answer: question.answer,
           options: JSON.stringify(options),
           gameId: game.id,
-          questionType: "mcq",
+          questionType: "mcq" as const,
         };
       });
       await prisma.question.createMany({
         data: manyData,
       });
     } else if (type === "open_ended") {
-      type openQuestion = {
-        question: string;
-        answer: string;
-      };
-
-      let manyData = data.questions.map((question: openQuestion) => {
+      const manyData = questions.map((question) => {
         return {
           question: question.question,
           answer: question.answer,
           gameId: game.id,
-          questionType: "open_ended",
+          questionType: "open_ended" as const,
         };
       });
 

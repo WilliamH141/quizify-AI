@@ -1,0 +1,56 @@
+import { strict_output } from "@/lib/gpt";
+import { quizCreationSchema } from "@/schemas/form/quiz";
+import { z } from "zod";
+
+type QuizCreationInput = z.infer<typeof quizCreationSchema>;
+
+export type MCQQuestion = {
+  question: string;
+  answer: string;
+  option1: string;
+  option2: string;
+  option3: string;
+};
+
+export type OpenEndedQuestion = {
+  question: string;
+  answer: string;
+};
+
+// Kept server-side only so nobody can hit question generation (and our OpenAI
+// bill) directly - callers like /api/game handle auth first.
+export async function generateQuestions({
+  amount,
+  topic,
+  type,
+}: QuizCreationInput): Promise<MCQQuestion[] | OpenEndedQuestion[]> {
+  if (type === "open_ended") {
+    return (await strict_output(
+      "You are a helpful ai that is able to generate a pair of questions and answers. the length of the answer should never exceed 15 words. store all the pairs of answers an questions in a JSON array",
+      new Array(amount).fill(
+        `You are to generate a random hard open-ended question about ${topic}`,
+      ),
+      {
+        question: "question",
+        answer: "answer with max length of 15 words",
+      },
+    )) as OpenEndedQuestion[];
+  }
+
+  return (await strict_output(
+    "You are a helpful ai that is able to generate mcq questions and answers. The length of each answer should not exceed 15 words. IMPORTANT: All options (answer, option1, option2, option3) must be unique and different from each other. Do NOT (i repeat do NOT) repeat any options.",
+    new Array(amount).fill(
+      `You are to generate a random mcq question about ${topic}`,
+    ),
+    {
+      question: "question",
+      answer: "answer with max length of 15 words",
+      option1:
+        "1st option with a max length of 15 words (must be different from answer)",
+      option2:
+        "2nd option with a max length of 15 words (must be different from answer and option1)",
+      option3:
+        "3rd option with a max length of 15 words (must be different from answer, option1, and option2)",
+    },
+  )) as MCQQuestion[];
+}
